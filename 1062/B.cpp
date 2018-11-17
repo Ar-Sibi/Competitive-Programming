@@ -1,0 +1,116 @@
+#include<bits/stdc++.h>
+#include<unordered_map>
+using namespace std;
+typedef long long ll;
+typedef unsigned long long ull;
+typedef vector<ll> vll;
+typedef long double LD;
+typedef pair<int, int> pii;
+typedef pair<ll, ll> pll;
+typedef vector<pll> vpll;
+typedef pair<string,ll> psl;
+typedef vector<psl> vpsl;
+typedef vector<int> vi;
+
+#define fur(i,a,b) for(int (i)=(a);i<(b);++(i))
+#define revf(i,a,b) for(int (i)=(a)-1;(i)>=(b);--(i))
+#define mp make_pair
+#define mod 1000000007
+#define inf 2000000007
+#define pb push_back
+#define eps 1e-5
+#define X first
+#define Y second
+
+ll modpow(ll base, ll exp, ll modulus) {
+  base %= modulus;
+  ll result = 1;
+  while (exp > 0) {
+    if (exp & 1) result = (result * base) % modulus;
+    base = (base * base) % modulus;
+    exp >>= 1;
+  }
+  return result;
+}
+
+ll modInverse(ll a, ll m) 
+{ 
+    ll m0 = m; 
+    ll y = 0, x = 1; 
+  
+    if (m == 1) 
+      return 0; 
+  
+    while (a > 1) 
+    { 
+        // q is quotient 
+        ll q = a / m; 
+        ll t = m; 
+  
+        // m is remainder now, process same as 
+        // Euclid's algo 
+        m = a % m, a = t; 
+        t = y; 
+  
+        // Update y and x 
+        y = x - q * y; 
+        x = t; 
+    } 
+  
+    // Make x positive 
+    if (x < 0) 
+       x += m0; 
+  
+    return x; 
+}
+
+
+int main(){
+	cin.tie(NULL);
+	ios_base::sync_with_stdio(false);
+  ll num;
+  cin>>num;
+  if(num==2){
+    cout<<"2 0";
+    return 0;
+  }
+  unordered_map<ll,ll> s;
+  vll facs(0);
+  ll val=num;
+  bool unequal=false;
+  fur(i,2,num){
+    if(val%i==0){
+      facs.pb(i);
+      while(val%i==0){val/=i;s[i]++;}
+    }
+  }
+  if(facs.size()==0){
+    facs.pb(num);
+    s[num]=1;
+  }
+  ll max=0;
+  ll prod=1;
+  bool two=false;
+  ll maxred=0;
+  fur(i,0,facs.size()){
+    if(i!=0){
+      if(s[facs[i]]!=s[facs[i-1]])unequal=true;
+    }
+    ll red=s[facs[i]];
+    // cout<<red<<endl;
+    ll ans=0;
+    ans=((!((red*2)&(red*2-1)))?((ll)log2(red)):(((ll)(ceil(log2(red))))));
+    if(((red*2)&(red*2-1))!=0)unequal=1;
+    // cout<<ans<<unequal<<endl;
+    // cout<<(red&(red-1))<<endl;
+    prod*=facs[i];
+    if(ans>max){max=ans;maxred=red;
+    }
+  }  
+  if(maxred<=1){
+    cout<<prod<<" "<<max;
+    return 0;
+  }
+  cout<<prod<<" "<<((((maxred*2)&(maxred*2-1))==0)?max+unequal:max+unequal);
+	return 0;
+}
