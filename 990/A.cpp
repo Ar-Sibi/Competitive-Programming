@@ -71,7 +71,49 @@ ll modinv(ll a, ll m) {
 int main(){
 	cin.tie(NULL);
 	ios_base::sync_with_stdio(false);
-
+    ll n;
+    cin>>n;
+    string s;
+    cin>>s;
+    if(n==1){
+        if(s=="1"){
+            cout<<"Yes";
+            return 0;
+        }
+        cout<<"No";
+        return 0;
+    }
+    if(s=="11"){
+        cout<<"No";
+        return 0;
+    }
+    fur(i,1,n-1){
+        if(s[i]==s[i-1]){
+            if(s[i]=='1'){
+                cout<<"No";
+                return 0;
+            }
+        }
+        if(s[i]==s[i+1]){
+            if(s[i]=='1'){
+                cout<<"No";
+                return 0;
+            }
+        }
+        if(s[i]==s[i-1]&&s[i]==s[i+1]&&s[i]=='0'){
+            cout<<"No";
+            return 0;
+        }
+    }
+    if(s[0]==s[1]&&s[0]=='0'){
+        cout<<"No";
+        return 0;
+    }
+    if(s[n-1]==s[n-2]&&s[n-1]=='0'){
+        cout<<"No";
+        return 0;
+    }
+    cout<<"Yes";
 
 
 

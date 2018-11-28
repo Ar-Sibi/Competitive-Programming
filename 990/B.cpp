@@ -67,11 +67,38 @@ ll modinv(ll a, ll m) {
     return x;
 }
 
-
+bool sorter(pll x,pll y){
+    return x.Y>y.Y;
+}
 int main(){
 	cin.tie(NULL);
 	ios_base::sync_with_stdio(false);
-
+    ll n;
+    cin>>n;
+    vpll seats(n);
+    fur(i,0,n){
+        ll x;
+        cin>>x;
+        seats[i]=mp(i+1,x);
+    }
+    sort(seats.begin(),seats.end(),sorter);
+    stack<ll> st1;
+    fur(i,0,n){
+        st1.push(seats[i].X);
+    }
+    stack<ll> st;
+    string s;
+    cin>>s;
+    fur(i,0,s.length()){
+        if(s[i]=='0'){
+            cout<<st1.top()<<" ";
+            st.push(st1.top());
+            st1.pop();
+        }else{
+            cout<<st.top()<<" ";
+            st.pop();
+        }
+    }
 
 
 

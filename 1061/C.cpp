@@ -1,6 +1,20 @@
 #include<bits/stdc++.h>
 #include<unordered_map>
 using namespace std;
+struct custom_hash {
+    static uint64_t splitmix64(uint64_t x) {
+        // http://xorshift.di.unimi.it/splitmix64.c
+        x += 0x9e3779b97f4a7c15;
+        x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9;
+        x = (x ^ (x >> 27)) * 0x94d049bb133111eb;
+        return x ^ (x >> 31);
+    }
+
+    size_t operator()(uint64_t x) const {
+        static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();
+        return splitmix64(x + FIXED_RANDOM);
+    }
+};
 typedef long long ll;
 typedef unsigned long long ull;
 typedef vector<ll> vll;
@@ -21,6 +35,7 @@ typedef vector<int> vi;
 #define eps 1e-5
 #define X first
 #define Y second
+
 
 ll modpow(ll base, ll exp, ll modulus) {
   base %= modulus;
@@ -68,34 +83,42 @@ ll modInverse(ll a, ll m)
 int main(){
 	cin.tie(NULL);
 	ios_base::sync_with_stdio(false);
-  string s;
-  cin>>s;
-  while(s!="e"){
-    if(s=="an"){
-      ll size;
-      cin>>size;
-      cout<<size<<"\n";
-      fur(i,0,size){
-        cout<<rand()%1000<<" ";
-      }
-      cout<<"\n";
+    ll n;
+    cin>>n;
+    vll a(n);
+    vll b(n);
+    fur(i,0,n)cin>>a[i];
+    vll dp(n+1);
+    fur(i,0,n){
+        ll val=a[i];
+        vll curr;
+        for(ll i=1;i<=sqrt(val);i++){
+            if(val%i==0){
+                if(i*i==val){
+                    curr.pb(i);
+                }else{
+                    curr.pb(i);
+                    curr.pb(val/i);
+                }
+            }
+        }
+        sort(curr.begin(),curr.end());
+        reverse(curr.begin(),curr.end());
+        fur(i,0,curr.size()){
+            // cout<<1;
+            if(curr[i]==1){
+                dp[1]++;
+            }else
+            if(curr[i]<=n){
+                dp[curr[i]]+=dp[curr[i]-1];
+                dp[curr[i]]%=mod;
+            }
+        }
     }
-    if(s=="as"){
-      ll size;
-      cin>>size;
-      cout<<size<<"\n";
-      vll ans(size,0);
-      fur(i,0,size){
-        ans[i]=(i+2);
-      }
-      random_shuffle(ans.begin(),ans.end());
-      random_shuffle(ans.begin(),ans.end());
-      fur(i,0,size){
-        cout<<ans[i]<<" ";
-      }
-      cout<<"\n";
+    ll sum=0;
+    fur(i,0,n+1){
+        sum=(sum+dp[i])%mod;
     }
-    cin>>s;
-  }
+    cout<<sum;
 	return 0;
 }

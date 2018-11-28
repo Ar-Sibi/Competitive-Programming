@@ -66,14 +66,40 @@ ll modinv(ll a, ll m) {
        x += m0;
     return x;
 }
-
+int calculateSubtreeSize(int index,vvll *adj,vll *visited,ll *ans){
+    (*visited)[index]=1;
+    ll componentSize=1;
+    for(ll i=0;i<(*adj)[index].size();i++){
+        if(!(*visited)[(*adj)[index][i]]){
+            componentSize+=calculateSubtreeSize((*adj)[index][i],adj,visited,ans);
+        }
+    }
+    if(componentSize%2==0){
+        (*ans)++;
+    }
+    return componentSize;
+}
 
 int main(){
 	cin.tie(NULL);
 	ios_base::sync_with_stdio(false);
-
-
-
-
+    ll n;
+    cin>>n;
+    if(n%2==1){
+        cout<<"-1";
+        return 0;
+    }
+    vvll adj(n,vll());
+    fur(i,0,n-1){
+        ll x,y;
+        cin>>x>>y;
+        x--;y--;
+        adj[x].pb(y);
+        adj[y].pb(x);
+    }
+    ll ans=0;
+    vll visited(n);
+    calculateSubtreeSize(0,&adj,&visited,&ans);
+    cout<<ans-1;
 	return 0;
 }

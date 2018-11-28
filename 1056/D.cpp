@@ -1,6 +1,20 @@
 #include<bits/stdc++.h>
 #include<unordered_map>
 using namespace std;
+struct custom_hash {
+    static uint64_t splitmix64(uint64_t x) {
+        // http://xorshift.di.unimi.it/splitmix64.c
+        x += 0x9e3779b97f4a7c15;
+        x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9;
+        x = (x ^ (x >> 27)) * 0x94d049bb133111eb;
+        return x ^ (x >> 31);
+    }
+
+    size_t operator()(uint64_t x) const {
+        static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();
+        return splitmix64(x + FIXED_RANDOM);
+    }
+};
 typedef long long ll;
 typedef unsigned long long ull;
 typedef vector<ll> vll;
@@ -22,6 +36,9 @@ typedef vector<int> vi;
 #define X first
 #define Y second
 
+ll max(ll a,ll b){
+    return a>b?a:b;
+}
 ll modpow(ll base, ll exp, ll modulus) {
   base %= modulus;
   ll result = 1;
@@ -62,40 +79,41 @@ ll modInverse(ll a, ll m)
        x += m0; 
   
     return x; 
-} 
-
+}
+vll visited;
+int calculateColors(vector<vll> *adj,vll *colors,ll index){
+    visited[index]=1;
+    ll colorVal=0;
+    if((*adj)[index].size()==1&&index!=0)colorVal=1;
+    else;
+    for(ll i=0;i<(*adj)[index].size();i++){
+        if(!visited[(*adj)[index][i]]){
+            colorVal+=calculateColors(adj,colors,(*adj)[index][i]);
+        }
+    }
+    (*colors)[index]=colorVal;
+    return colorVal;
+}
 
 int main(){
 	cin.tie(NULL);
 	ios_base::sync_with_stdio(false);
-  string s;
-  cin>>s;
-  while(s!="e"){
-    if(s=="an"){
-      ll size;
-      cin>>size;
-      cout<<size<<"\n";
-      fur(i,0,size){
-        cout<<rand()%1000<<" ";
-      }
-      cout<<"\n";
+    ll n;
+    cin>>n;
+    vector<vll> adj(n,vll());
+    visited=vll(n);
+    vll colors(n);
+    fur(i,0,n-1){
+        ll x,y;
+        cin>>x;
+        x--;
+        adj[i+1].pb(x);
+        adj[x].pb(i+1);
     }
-    if(s=="as"){
-      ll size;
-      cin>>size;
-      cout<<size<<"\n";
-      vll ans(size,0);
-      fur(i,0,size){
-        ans[i]=(i+2);
-      }
-      random_shuffle(ans.begin(),ans.end());
-      random_shuffle(ans.begin(),ans.end());
-      fur(i,0,size){
-        cout<<ans[i]<<" ";
-      }
-      cout<<"\n";
+    calculateColors(&adj,&colors,0);
+    sort(colors.begin(),colors.end());
+    fur(i,0,n){
+        cout<<max(colors[i],1)<<" ";
     }
-    cin>>s;
-  }
 	return 0;
 }
