@@ -91,5 +91,57 @@ int main(){
     vll dp1(n);
     vll dp2(n);
     fur(i,0,n)cin>>a[i];
-    
+    ll m=1,l=n;
+    fur(i,0,n-1){
+        if(a[i]<=a[i+1]){
+            dp1[i]=m;
+            dp1[i+1]=m;
+        }else{
+            m++;
+        }
+        if(a[i]>=a[i+1]){
+            dp2[i]=l;
+            dp2[i+1]=l;
+        }else{
+            l++;
+        }
+    }
+    fur(i,0,n-1){
+        if(dp1[i]!=0&&dp1[i+1]!=dp1[i]){
+            ll val=dp1[i];
+            ll eqval=dp2[i];
+            // cout<<i<<endl;
+            while(true){
+                if(dp2[i]==eqval){
+                    dp2[i]=val;
+                }else{
+                    break;
+                }
+                i++;
+                if(i==n){
+                    break;
+                }
+            }
+        }
+    }
+    while(q--){
+        ll x, y;
+        cin>>x>>y;
+        x--;y--;
+        if(n==1){
+            cout<<"Yes\n";
+        }else 
+        if((dp1[x]!=0&&dp1[x]==dp1[y])||(dp1[x]!=0&&dp1[x]==dp2[y])||(dp2[x]!=0&&dp2[x]==dp2[y])){
+            cout<<"Yes\n";
+        }else{
+            cout<<"No\n";
+        }
+    }
+    // fur(i,0,n){
+    //     cout<<dp1[i]<<" ";
+    // }
+    // cout<<endl;
+    // fur(i,0,n){
+    //     cout<<dp2[i]<<" ";
+    // }
 }
