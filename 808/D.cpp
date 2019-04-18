@@ -70,10 +70,51 @@ ll modinv(ll a, ll m) {
 
 int main(){
 	cin.tie(NULL);
+    
 	ios_base::sync_with_stdio(false);
-
-
-
+    unordered_map<ll,ll,myhash> m;
+    ll n;
+    cin>>n;
+    vll a(n);
+    ll sum=0;
+    fur(i,0,n){
+        cin>>a[i];
+        sum+=a[i];
+    }
+    ll r=sum;
+    ll l=0;
+    fur(i,0,n){
+        if(((l-r)%2==0)&&m[(l-r)/2]){
+            cout<<"YES";
+            return 0;
+        }
+        l+=a[i];
+        r-=a[i];
+        m[a[i]]=1;
+    }
+    if(((l-r)%2==0)&&m[(l-r)/2]){
+            cout<<"YES";
+            return 0;
+        }
+    reverse(a.begin(),a.end());
+    m.clear();
+    r=sum;
+    l=0;
+    fur(i,0,n){
+        if(((l-r)%2==0)&&m[(l-r)/2]){
+            cout<<"YES";
+            return 0;
+        }
+        l+=a[i];
+        r-=a[i];
+        m[a[i]]=1;
+    }
+    if(((l-r)%2==0)&&m[(l-r)/2]){
+            cout<<"YES";
+            return 0;
+        }
+    cout<<"NO";
+    return 0;
 
 	return 0;
 }

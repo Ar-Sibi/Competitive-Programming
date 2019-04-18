@@ -71,9 +71,14 @@ ll modinv(ll a, ll m) {
 int main(){
 	cin.tie(NULL);
 	ios_base::sync_with_stdio(false);
-
-
-
-
+    ll n,k;
+    cin>>n>>k;
+    vll a(n);
+    fur(i,0,n)cin>>a[i];
+    long double ans=0;
+    fur(i,0,n){
+        ans+=min<ll>(min<ll>(k,n-(k-1)),min<ll>(i+1,n-i))*a[i]*1.0f;
+    }
+    cout<<setprecision(10)<<ans/((n-k+1)*1.0f);
 	return 0;
 }

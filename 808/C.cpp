@@ -71,9 +71,49 @@ ll modinv(ll a, ll m) {
 int main(){
 	cin.tie(NULL);
 	ios_base::sync_with_stdio(false);
-
-
-
-
+    ll n,w;
+    cin>>n>>w;
+    vpll a(n);
+    vll b(n);
+    ll extra=w;
+    fur(i,0,n){
+        ll x;
+        cin>>x;
+        b[i]=x;
+        a[i].X=x;
+        a[i].Y=i;
+    }
+    sort(a.begin(),a.end());
+    vll ans(n);
+    ll filledindex=-1;
+    revf(i,n,0){
+        // fur(j,filledindex+1,a[i].Y+1){
+            ans[a[i].Y]=(a[i].X+1)/2;
+            w-=ans[a[i].Y];
+        // }
+        // filledindex=a[i].Y;
+    }
+    if(w<0){
+        cout<<-1;
+        return 0;
+    }
+    // cout<<w<<endl;
+    ll maxposs=b[0];
+    reverse(a.begin(),a.end());
+    fur(i,0,n){
+        // cout<<a[0].X<<" "<<a[0].Y<<"\n";
+        // maxposs=min<ll>(maxposs,b[i]);
+        while(ans[a[i].Y]<a[i].X&&w>0){
+            w--;
+            ans[a[i].Y]++;
+        }
+    }
+    if(w){
+        cout<<-1;
+        return 0;
+    }
+    fur(i,0,n){
+        cout<<ans[i]<<" ";
+    }
 	return 0;
 }

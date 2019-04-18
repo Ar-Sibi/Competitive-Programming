@@ -71,8 +71,15 @@ ll modinv(ll a, ll m) {
 int main(){
 	cin.tie(NULL);
 	ios_base::sync_with_stdio(false);
-
-
+    ll n;
+    cin>>n;
+    // if(n<10){
+    //     cout<<0;
+    //     return 0;
+    // }
+    ll x=floor(log10(n));
+    x=modpow(10,x,mod);
+    cout<<(n/x)*x+x-n;
 
 
 	return 0;
