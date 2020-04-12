@@ -66,45 +66,57 @@ ll modinv(ll a, ll m) {
        x += m0;
     return x;
 }
-
+pll dfs(ll i,ll d,vll &visited,vvll &adj){
+  
+  ll max=d;
+  ll maxi=i;
+  fur(j,0,adj[i].size()){
+    if(!visited[adj[i][j]]){
+      visited[adj[i][j]]=1;
+      pll p=dfs(adj[i][j],d+1,visited,adj);
+      if(p.X>max){
+        maxi=p.Y;
+        max=p.X;
+      }
+      
+    }
+  }
+  return {max,maxi};
+}
 
 int main(){
 	cin.tie(NULL);
 	ios_base::sync_with_stdio(false);
-  string s;
-  cin>>s;
-  ll n=s.length();
-  vector<pair<char, int>> f;
-  f.push_back({s[0],1});
-  fur(i,1,n){
-    if(s[i]!=f[f.size()-1].X){
-      f.push_back({s[i],1});
-    }else{
-      f[f.size()-1].Y++;
-    }
-  }
-  
-  if(f.size()%2==0){
-    cout<<0;
-  }else{
-    ll m=f[f.size()/2].Y;
-    if(m<2){
-      cout<<0;
-      return 0;
-    }
-    fur(i,0,f.size()/2){
-      if(f[i].X!=f[f.size()-(i+1)].X){
-        cout<<0;
-        return 0;
-      }
-      if(f[i].Y+f[f.size()-(i+1)].Y<3){
-        cout<<0;
-        return 0;
-      }
-    }
-    cout<<m+1;
+  ll n;
+  cin>>n;
+  vvll adj(n,vll(0));
+  fur(i,0,n-1){
+    ll x,y;
+    cin>>x>>y;
+    x--;y--;
+    adj[x].pb(y);
+    adj[y].pb(x);
   }
 
-
+  vll visited=vll(n);
+  visited[0]=1;
+    pll f=dfs(0,0,visited,adj);
+    visited=vll(n);
+    visited[f.Y]=1;
+    // cout<<f.X<<" "<<f.Y<<"\n";
+    pll q=dfs(f.Y,0,visited,adj);
+    vll ans={f.Y,q.Y,0};
+    sort(ans.begin(),ans.end());
+    if(ans[1]==0){
+      if(ans[2]!=1){
+        ans[1]=1;
+      }else{
+        ans[1]=2;
+      }
+    }
+    cout<<q.X+1<<"\n";
+    fur(i,0,ans.size()){
+      cout<<ans[i]+1<<" ";
+    }
 	return 0;
 }

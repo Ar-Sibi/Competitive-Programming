@@ -25,7 +25,7 @@ typedef vector<pll> vpll;
 typedef pair<string,ll> psl;
 typedef vector<psl> vpsl;
 typedef vector<int> vi;
-
+#define debug(i) cout<<(#i)<<"  "<<i<<"\n";
 #define fur(i,a,b) for(ll (i)=(a);i<(b);++(i))
 #define revf(i,a,b) for(ll (i)=(a)-1;(i)>=(b);--(i))
 #define mp make_pair
@@ -71,38 +71,28 @@ ll modinv(ll a, ll m) {
 int main(){
 	cin.tie(NULL);
 	ios_base::sync_with_stdio(false);
-  string s;
-  cin>>s;
-  ll n=s.length();
-  vector<pair<char, int>> f;
-  f.push_back({s[0],1});
-  fur(i,1,n){
-    if(s[i]!=f[f.size()-1].X){
-      f.push_back({s[i],1});
-    }else{
-      f[f.size()-1].Y++;
+  ll t;
+  cin>>t;
+  while(t--){
+    ll n,a,b;
+    cin>>n>>a>>b;
+    vll f(a),g(b);
+    fur(i,0,a){
+      cin>>f[i];
     }
-  }
-  
-  if(f.size()%2==0){
-    cout<<0;
-  }else{
-    ll m=f[f.size()/2].Y;
-    if(m<2){
-      cout<<0;
-      return 0;
+    fur(i,0,b){
+      cin>>g[i];
     }
-    fur(i,0,f.size()/2){
-      if(f[i].X!=f[f.size()-(i+1)].X){
-        cout<<0;
-        return 0;
-      }
-      if(f[i].Y+f[f.size()-(i+1)].Y<3){
-        cout<<0;
-        return 0;
-      }
+    ll max=0;
+    fur(i,0,a){
+      if(max<f[i])max=f[i];
     }
-    cout<<m+1;
+    // debug(max);
+    fur(j,0,b){
+      if(max<g[j])max=-1;
+    }
+    if(max==-1)cout<<"NO\n";
+    else cout<<"YES\n";
   }
 
 

@@ -71,39 +71,33 @@ ll modinv(ll a, ll m) {
 int main(){
 	cin.tie(NULL);
 	ios_base::sync_with_stdio(false);
-  string s;
-  cin>>s;
-  ll n=s.length();
-  vector<pair<char, int>> f;
-  f.push_back({s[0],1});
-  fur(i,1,n){
-    if(s[i]!=f[f.size()-1].X){
-      f.push_back({s[i],1});
-    }else{
-      f[f.size()-1].Y++;
-    }
+  ll n,m,k;
+  cin>>n>>m>>k;
+  vpll st(k);
+  fur(i,0,k){cin>>st[i].first>>st[i].second;}
+  vpll end(k);
+  fur(i,0,k){cin>>end[i].first>>end[i].second;}
+  string ans="";
+  cout<<((n-1+m-1)+(m*n-1))<<"\n";
+  fur(i,0,n-1){
+    cout<<"U";
   }
-  
-  if(f.size()%2==0){
-    cout<<0;
-  }else{
-    ll m=f[f.size()/2].Y;
-    if(m<2){
-      cout<<0;
-      return 0;
-    }
-    fur(i,0,f.size()/2){
-      if(f[i].X!=f[f.size()-(i+1)].X){
-        cout<<0;
-        return 0;
-      }
-      if(f[i].Y+f[f.size()-(i+1)].Y<3){
-        cout<<0;
-        return 0;
-      }
-    }
-    cout<<m+1;
+  fur(i,0,m-1){
+    cout<<"L";
   }
+  fur(j,0,n){
+    if(j%2==0)
+    fur(i,0,m-1){
+      cout<<"R";
+    }    
+    if(j%2==1){
+      fur(i,0,m-1){
+      cout<<"L";
+      } 
+    }
+    if(j!=n-1)cout<<"D";
+  }
+
 
 
 	return 0;

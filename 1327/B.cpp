@@ -71,39 +71,49 @@ ll modinv(ll a, ll m) {
 int main(){
 	cin.tie(NULL);
 	ios_base::sync_with_stdio(false);
-  string s;
-  cin>>s;
-  ll n=s.length();
-  vector<pair<char, int>> f;
-  f.push_back({s[0],1});
-  fur(i,1,n){
-    if(s[i]!=f[f.size()-1].X){
-      f.push_back({s[i],1});
+  ll t;
+  cin>>t;
+
+  while(t--){
+    ll n;
+    cin>>n;
+    vvll a(n);
+    fur(i,0,n){
+      ll g;
+      cin>>g;
+      a[i]=vll(g);
+      fur(j,0,g){
+        cin>>a[i][j];
+      }
+    }
+    map<ll,ll> taken;
+    ll npi=-1;
+    fur(i,0,n){
+      bool fl=1;
+      fur(j,0,a[i].size()){
+        if(!taken[a[i][j]]){
+          taken[a[i][j]]=1;
+          fl=0;
+          break;
+        }
+        
+      }
+      if(fl)npi=i;
+    }
+    if(npi!=-1){
+      cout<<"IMPROVE\n";
+      cout<<npi+1<<" ";
+      fur(i,1,n+1){
+        if(!taken[i]){
+          cout<<i<<"\n";
+          break;
+        }
+      }
     }else{
-      f[f.size()-1].Y++;
+      cout<<"OPTIMAL\n";
     }
   }
-  
-  if(f.size()%2==0){
-    cout<<0;
-  }else{
-    ll m=f[f.size()/2].Y;
-    if(m<2){
-      cout<<0;
-      return 0;
-    }
-    fur(i,0,f.size()/2){
-      if(f[i].X!=f[f.size()-(i+1)].X){
-        cout<<0;
-        return 0;
-      }
-      if(f[i].Y+f[f.size()-(i+1)].Y<3){
-        cout<<0;
-        return 0;
-      }
-    }
-    cout<<m+1;
-  }
+
 
 
 	return 0;

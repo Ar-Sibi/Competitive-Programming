@@ -29,7 +29,7 @@ typedef vector<int> vi;
 #define fur(i,a,b) for(ll (i)=(a);i<(b);++(i))
 #define revf(i,a,b) for(ll (i)=(a)-1;(i)>=(b);--(i))
 #define mp make_pair
-#define mod 1000000007
+#define mod 998244353
 #define inf 2000000007
 #define pb push_back
 #define eps 1e-5
@@ -71,40 +71,20 @@ ll modinv(ll a, ll m) {
 int main(){
 	cin.tie(NULL);
 	ios_base::sync_with_stdio(false);
-  string s;
-  cin>>s;
-  ll n=s.length();
-  vector<pair<char, int>> f;
-  f.push_back({s[0],1});
-  fur(i,1,n){
-    if(s[i]!=f[f.size()-1].X){
-      f.push_back({s[i],1});
-    }else{
-      f[f.size()-1].Y++;
-    }
+  ll n;
+  cin>>n;
+  ll sum=0;
+  ll modp=998244353;
+  vll ans(n);
+  ll adval=0;
+  fur(i,0,n){
+    sum=(sum+adval)%mod;
+    ans[i]=((mod+(((i+1)*modpow(10,i+1,modp))%mod)-sum)%mod);
+    adval=(adval+ans[i])%mod;
+    sum=(sum+((mod+(((i+1)*modpow(10,i+1,modp))%mod)-sum)%mod));
   }
-  
-  if(f.size()%2==0){
-    cout<<0;
-  }else{
-    ll m=f[f.size()/2].Y;
-    if(m<2){
-      cout<<0;
-      return 0;
-    }
-    fur(i,0,f.size()/2){
-      if(f[i].X!=f[f.size()-(i+1)].X){
-        cout<<0;
-        return 0;
-      }
-      if(f[i].Y+f[f.size()-(i+1)].Y<3){
-        cout<<0;
-        return 0;
-      }
-    }
-    cout<<m+1;
-  }
-
+  reverse(ans.begin(),ans.end());
+  fur(i,0,n)cout<<ans[i]<<" ";
 
 	return 0;
 }

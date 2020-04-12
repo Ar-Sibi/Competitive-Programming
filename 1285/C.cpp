@@ -66,45 +66,61 @@ ll modinv(ll a, ll m) {
        x += m0;
     return x;
 }
+ll solveme(vll &a,ll s1,ll s2,ll ind,ll v){
+  if(ind==a.size()){
+    return max(s1,s2);
+  }
+  return min(solveme(a,s1*a[ind],s2,ind+1,v),solveme(a,s1,s2*a[ind],ind+1,v));
+}
 
 
 int main(){
 	cin.tie(NULL);
 	ios_base::sync_with_stdio(false);
-  string s;
-  cin>>s;
-  ll n=s.length();
-  vector<pair<char, int>> f;
-  f.push_back({s[0],1});
-  fur(i,1,n){
-    if(s[i]!=f[f.size()-1].X){
-      f.push_back({s[i],1});
-    }else{
-      f[f.size()-1].Y++;
-    }
-  }
-  
-  if(f.size()%2==0){
-    cout<<0;
+  ll x;
+  cin>>x;
+  ll y=x;
+  if(x==1){
+    cout<<"1 1";
+    return 0;
   }else{
-    ll m=f[f.size()/2].Y;
-    if(m<2){
-      cout<<0;
-      return 0;
-    }
-    fur(i,0,f.size()/2){
-      if(f[i].X!=f[f.size()-(i+1)].X){
-        cout<<0;
-        return 0;
-      }
-      if(f[i].Y+f[f.size()-(i+1)].Y<3){
-        cout<<0;
-        return 0;
-      }
-    }
-    cout<<m+1;
-  }
 
+  }
+  vll factors(0);
+
+  for(ll i=2;i<=1000000&&i<=x;i++){
+    ll lf=1;
+    if(x%i==0){
+    while(x%i==0){
+      lf*=i;
+      x/=i;
+    }
+    factors.push_back(lf);
+    }
+  }
+  if(x!=1){
+    factors.push_back(x);
+    factors.push_back(1);
+  }else{
+    factors.push_back(1);
+  }
+  // fur(i,0,factors.size()){
+  //   cout<<factors[i]<<" ";
+  // }
+  ll ans=solveme(factors,1,1,0,y);
+  sort(factors.begin(),factors.end());
+  reverse(factors.begin(),factors.end());
+  ll a=1,b=1;
+  for(ll i=0;i<factors.size();i++){
+    if(a<b){
+      a*=factors[i];
+    }else{
+      b*=factors[i];
+    }
+  }
+  cout<<a<<" "<<b;
+  cout<<"\n";
+  cout<<ans<<" "<<y/ans;
 
 	return 0;
 }

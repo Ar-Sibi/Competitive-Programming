@@ -71,39 +71,31 @@ ll modinv(ll a, ll m) {
 int main(){
 	cin.tie(NULL);
 	ios_base::sync_with_stdio(false);
-  string s;
-  cin>>s;
-  ll n=s.length();
-  vector<pair<char, int>> f;
-  f.push_back({s[0],1});
-  fur(i,1,n){
-    if(s[i]!=f[f.size()-1].X){
-      f.push_back({s[i],1});
+  ll t;
+  cin>>t;
+  while(t--){
+    ll n;
+    cin>>n;
+    vll ans(0);
+    fur(i,2,100000){
+      if(n%i==0){
+        ans.push_back(i);
+        n/=i;
+      }
+    }
+    if(n!=1)
+    ans.push_back(n);
+    fur(i,3,ans.size()){
+        ans[2]*=ans[i];
+      }
+    if(ans.size()<3||(ans[1]==ans[2])||(ans[0]==ans[2])){
+      cout<<"NO\n";
     }else{
-      f[f.size()-1].Y++;
+      cout<<"YES\n";
+      cout<<ans[0]<<" "<<ans[1]<<" "<<ans[2]<<"\n";
     }
   }
-  
-  if(f.size()%2==0){
-    cout<<0;
-  }else{
-    ll m=f[f.size()/2].Y;
-    if(m<2){
-      cout<<0;
-      return 0;
-    }
-    fur(i,0,f.size()/2){
-      if(f[i].X!=f[f.size()-(i+1)].X){
-        cout<<0;
-        return 0;
-      }
-      if(f[i].Y+f[f.size()-(i+1)].Y<3){
-        cout<<0;
-        return 0;
-      }
-    }
-    cout<<m+1;
-  }
+
 
 
 	return 0;

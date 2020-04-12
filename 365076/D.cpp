@@ -63,47 +63,66 @@ ll modinv(ll a, ll m) {
     if (x < 0) x += m0;
     return x;
 }
+struct node {
+    struct node* left;
+    struct node* right;
+    ll val=0;
+    ll carry=0;
+};
 
 int main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
-    ll n, m;
-    cin >> n >> m;
-    vvll bo(m, vll(n));
-    vll votes(n);
-    fur(i, 0, m) {
-        fur(j, 0, n) {
-            cin >> bo[i][j];
-            votes[j] += bo[i][j];
-        }
-    }
-    ll min = m+1;
-    vll ans(0);
-    fur(i, 0, n - 1) {
-        vpll g(0);
-        fur(j, 0, m) { g.push_back({bo[j][i] - bo[j][n - 1], j}); }
-        sort(g.begin(), g.end());
-        ll diff = votes[n - 1] - votes[i];
-        ll cv = 0;
-        vll ca(0);
-        fur(i, 0, m) {
-            if (diff <= 0) break;
-            diff += g[i].X;
-            ca.pb(g[i].Y);
-            cv++;
-        }
-        if (cv < min) {
-            ans=vll(0);
-            fur(i,0,ca.size()){
-              ans.pb(ca[i]+1);
+    ll n;
+    cin >> n;
+    struct node* g = new node();
+    vector<bitset<19>> a(n);
+    std::bitset<19> ans;
+    vector<struct node*> level(19);
+    vll levelo(19);
+    fur(k, 19, 20) {
+      level[0]=new node();
+        revf(i, k, 0) {
+            struct node* f = level[0];
+            fur(j, 0, n) {
+                if (a[j][i]) {
+                    if (!f->right) {
+                        f->right = new node();
+                        f->right->val = 1;
+
+                    } else {
+                        f->right->val++;
+                    }
+                    f = f->right;
+                } else {
+                    if (!f->left) {
+                        f->left = new node();
+                        f->left->val = 1;
+                    } else {
+                        f->left->val++;
+                    }
+                    f = f->left;
+                }
             }
-            min = cv;
         }
-        // vll ans2(0);
     }
-    cout<<min<<"\n";
-    fur(i,0,ans.size()){
-      cout<<ans[i]<<" ";
+    fur(i, 0, n) {
+        ll s;
+        cin >> s;
+        // cin>>a;
+        a[i] = bitset<19>(s);
     }
+    ll carry = 0;
+    fur(b, 0, 19) {
+        ll u = 0;
+        ll d = 0;
+        fur(i, 0, n) {
+            if (a[i][b])
+                u++;
+            else
+                d++;
+        }
+    }
+
     return 0;
 }

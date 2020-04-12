@@ -67,43 +67,39 @@ ll modinv(ll a, ll m) {
 int main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
-    ll n, m;
-    cin >> n >> m;
-    vvll bo(m, vll(n));
-    vll votes(n);
-    fur(i, 0, m) {
+    ll t;
+    cin >> t;
+    while (t--) {
+        ll n;
+        cin >> n;
+        ll l, r;
+        l = 0;
+        r = n;
+        vll as(n);
+        fur(i, 0, n) {
+            cin >> as[i];
+            as[i]--;
+        }
+        fur(i, 0, n) { cout << as[i] << " "; }
+        cout<<"\n";
+        vll cs(n);
+        fur(i, 0, n) {
+            cin >> cs[i];
+            // cs[i]--;
+        }
+
+        ll dfsPaths(n);
+        vll visited(n);
+        ll mina = INT_MAX;
+
         fur(j, 0, n) {
-            cin >> bo[i][j];
-            votes[j] += bo[i][j];
+            vll b(n);
+            fur(h, 0, n) { b[h] = as[as[h]]; }
+            fur(k, 0, n) { cout << b[k] << " "; }
+            cout << "\n";
         }
+        cout << mina << "\n";
     }
-    ll min = m+1;
-    vll ans(0);
-    fur(i, 0, n - 1) {
-        vpll g(0);
-        fur(j, 0, m) { g.push_back({bo[j][i] - bo[j][n - 1], j}); }
-        sort(g.begin(), g.end());
-        ll diff = votes[n - 1] - votes[i];
-        ll cv = 0;
-        vll ca(0);
-        fur(i, 0, m) {
-            if (diff <= 0) break;
-            diff += g[i].X;
-            ca.pb(g[i].Y);
-            cv++;
-        }
-        if (cv < min) {
-            ans=vll(0);
-            fur(i,0,ca.size()){
-              ans.pb(ca[i]+1);
-            }
-            min = cv;
-        }
-        // vll ans2(0);
-    }
-    cout<<min<<"\n";
-    fur(i,0,ans.size()){
-      cout<<ans[i]<<" ";
-    }
+
     return 0;
 }

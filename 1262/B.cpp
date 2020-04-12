@@ -71,39 +71,48 @@ ll modinv(ll a, ll m) {
 int main(){
 	cin.tie(NULL);
 	ios_base::sync_with_stdio(false);
-  string s;
-  cin>>s;
-  ll n=s.length();
-  vector<pair<char, int>> f;
-  f.push_back({s[0],1});
-  fur(i,1,n){
-    if(s[i]!=f[f.size()-1].X){
-      f.push_back({s[i],1});
+  ll t;
+  cin>>t;
+  while(t--){
+    ll n;
+    cin>>n;
+    vll p(n);
+    fur(i,0,n){
+      cin>>p[i];
+    }
+    vll a(n);
+    ll visitedind=0;
+    a[0]=p[0];
+    vll visited(n);
+    visited[a[0]-1]=1;
+    fur(i,1,n){
+      if(!visited[p[i]-1]){
+        visited[p[i]-1]=1;
+        a[i]=p[i];
+        continue;
+      }
+      ll j=visitedind;
+      while((j<p[i])&&visited[j]){
+        j++;
+      }
+      if(j>=p[i]||j==n){
+        visitedind=n+1;
+        break;
+      }
+      a[i]=j+1;
+      visited[j]=1;
+      visitedind=j+1;
+    }
+    if(visitedind==n+1){
+      cout<<-1<<"\n";
     }else{
-      f[f.size()-1].Y++;
+      fur(i,0,n){
+        cout<<a[i]<<" ";
+      }
+      cout<<"\n";
     }
   }
-  
-  if(f.size()%2==0){
-    cout<<0;
-  }else{
-    ll m=f[f.size()/2].Y;
-    if(m<2){
-      cout<<0;
-      return 0;
-    }
-    fur(i,0,f.size()/2){
-      if(f[i].X!=f[f.size()-(i+1)].X){
-        cout<<0;
-        return 0;
-      }
-      if(f[i].Y+f[f.size()-(i+1)].Y<3){
-        cout<<0;
-        return 0;
-      }
-    }
-    cout<<m+1;
-  }
+
 
 
 	return 0;

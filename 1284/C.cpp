@@ -63,47 +63,46 @@ ll modinv(ll a, ll m) {
     if (x < 0) x += m0;
     return x;
 }
+ll modmult(ll a, ll b, ll m) { return (a * b) % m; }
+ll modfact(ll n, ll m) {
+    ll result = 1;
+    while (n > 1) {
+        result = (long long)(result * n) % m;
+        n -= 1;
+    }
+    return result % m;
+}
+ll bc(ll n, ll k, ll m) {
+    // cout<<"weqweqweqw"<<inverse(modfact(k))<<endl;
+    // cout<<modmult(modfact(n), inverse(modfact(k)))<<"wops"<<endl;
+    return modmult(modmult(modfact(n, m), modinv(modfact(k, m), m), m),
+                   modinv(modfact(n - k, m), m), m);
+}
 
 int main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
     ll n, m;
     cin >> n >> m;
-    vvll bo(m, vll(n));
-    vll votes(n);
-    fur(i, 0, m) {
-        fur(j, 0, n) {
-            cin >> bo[i][j];
-            votes[j] += bo[i][j];
-        }
+    vll f(n);
+    f[0] = 1;
+    fur(i, 1, n + 1) f[i] = (f[i - 1] * i) % m;
+    ll f2 = 1;
+    fur(i, 1, n + 1) f2 = (f2 * i) % m;
+    f2 = (f2 * n) % m;
+    ll ans = 0;
+
+    fur(i, 2, n + 1) {ans+=(((n-i)+1)*f[i]*f[n-i]);
+  cout<<ans<<"\n";
+  ans%=m;
     }
-    ll min = m+1;
-    vll ans(0);
-    fur(i, 0, n - 1) {
-        vpll g(0);
-        fur(j, 0, m) { g.push_back({bo[j][i] - bo[j][n - 1], j}); }
-        sort(g.begin(), g.end());
-        ll diff = votes[n - 1] - votes[i];
-        ll cv = 0;
-        vll ca(0);
-        fur(i, 0, m) {
-            if (diff <= 0) break;
-            diff += g[i].X;
-            ca.pb(g[i].Y);
-            cv++;
-        }
-        if (cv < min) {
-            ans=vll(0);
-            fur(i,0,ca.size()){
-              ans.pb(ca[i]+1);
-            }
-            min = cv;
-        }
-        // vll ans2(0);
-    }
-    cout<<min<<"\n";
-    fur(i,0,ans.size()){
-      cout<<ans[i]<<" ";
-    }
+    cout << ans;
+    // ans=((n*(n-1))/2)%m;
+    // ans=(ans*ans)%m;
+    // ans = (ans*2) % m;
+    ans = (ans + f2) % m;
+    cout << f2 << "\n";
+    cout << ans;
+
     return 0;
 }

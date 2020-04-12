@@ -71,39 +71,74 @@ ll modinv(ll a, ll m) {
 int main(){
 	cin.tie(NULL);
 	ios_base::sync_with_stdio(false);
-  string s;
-  cin>>s;
-  ll n=s.length();
-  vector<pair<char, int>> f;
-  f.push_back({s[0],1});
-  fur(i,1,n){
-    if(s[i]!=f[f.size()-1].X){
-      f.push_back({s[i],1});
-    }else{
-      f[f.size()-1].Y++;
+  ll t;
+  cin>>t;
+  while(t--){
+    ll n;
+    ll l,r;
+    cin>>n>>l>>r;
+    ll max=(n*(n-1))+1;
+    if(l==r&&l==max){
+      cout<<"\n1\n";
+      continue;
     }
-  }
-  
-  if(f.size()%2==0){
-    cout<<0;
-  }else{
-    ll m=f[f.size()/2].Y;
-    if(m<2){
-      cout<<0;
-      return 0;
-    }
-    fur(i,0,f.size()/2){
-      if(f[i].X!=f[f.size()-(i+1)].X){
-        cout<<0;
-        return 0;
+    l--;
+    // r--;
+    
+    ll past=0;
+    ll startingb=-1;
+    ll startingu=-1;
+    bool midway=l%2;
+    if(l%2)l--;
+    fur(i,0,n){
+      past+=((n-(i+1)))*2;
+      if(past==l){
+        startingb=i+2;
+        startingu=i+3;
+        break;
       }
-      if(f[i].Y+f[f.size()-(i+1)].Y<3){
-        cout<<0;
-        return 0;
+      if(past>l){
+        startingb=i+1;
+        // cout<<past<<"  "<<l<<"\n";
+        startingu=2+(((n-(i+1)))*2-((past-l)))/2;
+        break;
       }
     }
-    cout<<m+1;
+    bool midwayend=r%2;
+    if(r%2)r++;
+    for(ll j=l;j<r;j+=2){
+      
+      if(j==l&&midway){
+        cout<<startingu<<" ";
+      }else{
+        cout<<startingb<<" "<<startingu<<" ";
+        startingu++;
+        if(startingu>n){
+          startingu=startingb+2;
+          startingb=startingb+1;
+        }
+        
+      }
+    }
+    // cout<<endl;
+    // cout<<l<<r;
+    // cout<<endl;
+    if(l>=r){
+      if(midway){
+        cout<<startingu;
+      }else{
+        cout<<startingb;
+      }
+    }
+    else if(midwayend){
+        if(startingu>n&&startingb==n){
+          cout<<"1";
+        }else
+        cout<<startingb<<" ";
+      }
+    cout<<"\n";
   }
+
 
 
 	return 0;

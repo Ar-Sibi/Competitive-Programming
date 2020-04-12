@@ -71,40 +71,41 @@ ll modinv(ll a, ll m) {
 int main(){
 	cin.tie(NULL);
 	ios_base::sync_with_stdio(false);
-  string s;
-  cin>>s;
-  ll n=s.length();
-  vector<pair<char, int>> f;
-  f.push_back({s[0],1});
-  fur(i,1,n){
-    if(s[i]!=f[f.size()-1].X){
-      f.push_back({s[i],1});
-    }else{
-      f[f.size()-1].Y++;
+  ll n,m;
+  cin>>n>>m;
+  vvll a(n,vll(m));
+  ll ans1=0;
+  fur(i,0,n)fur(j,0,m)cin>>a[i][j];
+  fur(i,0,m){
+    // vll ans(m);?
+    unordered_map<ll,ll> ans;
+    fur(j,0,n){
+      ans[(i+1)+(j*m)]=j+1;
+      // cout<<(i+1)+(j*m)<<" ";
     }
-  }
-  
-  if(f.size()%2==0){
-    cout<<0;
-  }else{
-    ll m=f[f.size()/2].Y;
-    if(m<2){
-      cout<<0;
-      return 0;
-    }
-    fur(i,0,f.size()/2){
-      if(f[i].X!=f[f.size()-(i+1)].X){
-        cout<<0;
-        return 0;
-      }
-      if(f[i].Y+f[f.size()-(i+1)].Y<3){
-        cout<<0;
-        return 0;
+    
+    map<pair<ll,ll>,ll> m2;
+    vll fq(n);
+    fur(j,0,n){
+      if(ans[a[j][i]]){
+        // if(i==1)
+        // cout<<"x"<<ans[a[j][i]]<<"\n";
+        fq[(n+(j-(ans[a[j][i]]-1)))%n]++;
       }
     }
-    cout<<m+1;
+    // fur(j,0,fq.size()){
+    //   cout<<fq[j]<<" ";
+    // }
+    // cout<<"\n\n\n\n\n\n";
+    ll min=n;
+    fur(j,0,n){
+      if(j+(n-fq[j])<min){
+        min=j+(n-fq[j]);
+      }
+    }
+    ans1+=min;
   }
-
+  cout<<ans1;
 
 	return 0;
 }

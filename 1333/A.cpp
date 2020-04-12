@@ -67,43 +67,32 @@ ll modinv(ll a, ll m) {
 int main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
-    ll n, m;
-    cin >> n >> m;
-    vvll bo(m, vll(n));
-    vll votes(n);
-    fur(i, 0, m) {
-        fur(j, 0, n) {
-            cin >> bo[i][j];
-            votes[j] += bo[i][j];
-        }
-    }
-    ll min = m+1;
-    vll ans(0);
-    fur(i, 0, n - 1) {
-        vpll g(0);
-        fur(j, 0, m) { g.push_back({bo[j][i] - bo[j][n - 1], j}); }
-        sort(g.begin(), g.end());
-        ll diff = votes[n - 1] - votes[i];
-        ll cv = 0;
-        vll ca(0);
-        fur(i, 0, m) {
-            if (diff <= 0) break;
-            diff += g[i].X;
-            ca.pb(g[i].Y);
-            cv++;
-        }
-        if (cv < min) {
-            ans=vll(0);
-            fur(i,0,ca.size()){
-              ans.pb(ca[i]+1);
+    ll t;
+    cin >> t;
+    while (t--) {
+        ll n, m;
+        cin >> n >> m;
+        vector<string> s(n, "");
+        fur(i, 0, n) {
+            fur(j, 0, m) {
+                if ((n % 2 == 0) || m % 2 == 0) {
+                    if ((i + j) % 2 == 0)
+                        s[i].append(1, 'W');
+                    else
+                        s[i].append(1, 'B');
+                }else{
+                    if ((i + j) % 2 != 0)
+                        s[i].append(1, 'W');
+                    else
+                        s[i].append(1, 'B');
+                }
             }
-            min = cv;
         }
-        // vll ans2(0);
+        if ((n % 2 == 0) || m % 2 == 0) {
+            s[0][0] = 'B';
+        }
+        fur(i, 0, n) { cout << s[i] << "\n"; }
     }
-    cout<<min<<"\n";
-    fur(i,0,ans.size()){
-      cout<<ans[i]<<" ";
-    }
+
     return 0;
 }

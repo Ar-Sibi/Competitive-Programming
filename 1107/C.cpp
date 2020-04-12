@@ -71,40 +71,50 @@ ll modinv(ll a, ll m) {
 int main(){
 	cin.tie(NULL);
 	ios_base::sync_with_stdio(false);
+  ll n,k;
+  cin>>n>>k;
+  vll a(n);
+  fur(i,0,n)cin>>a[i];
   string s;
   cin>>s;
-  ll n=s.length();
-  vector<pair<char, int>> f;
-  f.push_back({s[0],1});
-  fur(i,1,n){
-    if(s[i]!=f[f.size()-1].X){
-      f.push_back({s[i],1});
+  ll ans=0;
+  ll bp=0;
+  ll sum1=0;
+  ll sum2=0;
+  ll sum3=0;
+  char c='0';
+  vpll problem(0);
+  fur(i,0,n){
+    sum1+=a[i];
+    sum3+=a[i];
+    if(s[i]==c){
+      bp++;
     }else{
-      f[f.size()-1].Y++;
+      sum1=a[i];
+      c=s[i];
+      bp=1;
+    }
+    if(bp==k+1){
+      sum2+=sum1;
+      problem.pb({i-k,i});
+    }else if(bp>k+1){
+      sum2+=a[i];
+      problem[problem.size()-1].Y=i;
     }
   }
-  
-  if(f.size()%2==0){
-    cout<<0;
-  }else{
-    ll m=f[f.size()/2].Y;
-    if(m<2){
-      cout<<0;
-      return 0;
+  sum3-=sum2;
+  fur(x,0,problem.size()){
+    // cout<<problem[x].X<<" "<<problem[x].Y<<"\n";
+    sort(a.begin()+problem[x].X,a.begin()+problem[x].Y+1);
+    reverse(a.begin()+problem[x].X,a.begin()+problem[x].Y+1);
+    // fur(i,0,n){
+    //   cout<<a[i]<<" ";
+    // }
+    // cout<<" sd\n";
+    fur(j,0,k){
+      sum3+=a[problem[x].X+j];
     }
-    fur(i,0,f.size()/2){
-      if(f[i].X!=f[f.size()-(i+1)].X){
-        cout<<0;
-        return 0;
-      }
-      if(f[i].Y+f[f.size()-(i+1)].Y<3){
-        cout<<0;
-        return 0;
-      }
-    }
-    cout<<m+1;
   }
-
-
+  cout<<sum3;
 	return 0;
 }

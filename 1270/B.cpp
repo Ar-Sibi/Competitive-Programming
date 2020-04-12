@@ -67,43 +67,31 @@ ll modinv(ll a, ll m) {
 int main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
-    ll n, m;
-    cin >> n >> m;
-    vvll bo(m, vll(n));
-    vll votes(n);
-    fur(i, 0, m) {
-        fur(j, 0, n) {
-            cin >> bo[i][j];
-            votes[j] += bo[i][j];
-        }
-    }
-    ll min = m+1;
-    vll ans(0);
-    fur(i, 0, n - 1) {
-        vpll g(0);
-        fur(j, 0, m) { g.push_back({bo[j][i] - bo[j][n - 1], j}); }
-        sort(g.begin(), g.end());
-        ll diff = votes[n - 1] - votes[i];
-        ll cv = 0;
-        vll ca(0);
-        fur(i, 0, m) {
-            if (diff <= 0) break;
-            diff += g[i].X;
-            ca.pb(g[i].Y);
-            cv++;
-        }
-        if (cv < min) {
-            ans=vll(0);
-            fur(i,0,ca.size()){
-              ans.pb(ca[i]+1);
+    ll t;
+    cin >> t;
+    while (t--) {
+        ll n;
+        cin >> n;
+        vll a(n);
+        fur(i, 0, n) { cin >> a[i]; }
+        if (a.size() == 1) {
+            cout << "NO\n";
+        } else {
+            ll ans = -1;
+            for (ll i = 0; i < a.size() - 1; i++) {
+                if (abs(a[i] - a[i + 1]) >= 2) {
+                    ans = i;
+                    break;
+                }
             }
-            min = cv;
+            if(ans==-1){
+              cout<<"NO\n";
+            }else{
+              cout<<"YES\n";
+              cout<<ans+1<<" "<<ans+2<<"\n";
+            }
         }
-        // vll ans2(0);
     }
-    cout<<min<<"\n";
-    fur(i,0,ans.size()){
-      cout<<ans[i]<<" ";
-    }
+
     return 0;
 }

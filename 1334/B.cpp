@@ -19,6 +19,7 @@ typedef unsigned long long ull;
 typedef vector<ll> vll;
 typedef vector<vll> vvll;
 typedef long double ld;
+typedef vector<ld> vld;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 typedef vector<pll> vpll;
@@ -71,39 +72,26 @@ ll modinv(ll a, ll m) {
 int main(){
 	cin.tie(NULL);
 	ios_base::sync_with_stdio(false);
-  string s;
-  cin>>s;
-  ll n=s.length();
-  vector<pair<char, int>> f;
-  f.push_back({s[0],1});
-  fur(i,1,n){
-    if(s[i]!=f[f.size()-1].X){
-      f.push_back({s[i],1});
-    }else{
-      f[f.size()-1].Y++;
-    }
-  }
-  
-  if(f.size()%2==0){
-    cout<<0;
-  }else{
-    ll m=f[f.size()/2].Y;
-    if(m<2){
-      cout<<0;
-      return 0;
-    }
-    fur(i,0,f.size()/2){
-      if(f[i].X!=f[f.size()-(i+1)].X){
-        cout<<0;
-        return 0;
-      }
-      if(f[i].Y+f[f.size()-(i+1)].Y<3){
-        cout<<0;
-        return 0;
+  ll t;
+  cin>>t;
+  while (t--){
+    ll n,x;
+    cin>>n>>x;
+    vld a(n);
+    fur(i,0,n)cin>>a[i];
+    sort(a.begin(),a.end());
+    reverse(a.begin(),a.end());
+    ll sum=0;
+    ll ans=0;
+    fur(i,0,n){
+      sum+=a[i];
+      if((sum/(i+1LL))>=x){
+        ans++;
       }
     }
-    cout<<m+1;
+    cout<<ans<<"\n";
   }
+
 
 
 	return 0;

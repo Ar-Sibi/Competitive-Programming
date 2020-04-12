@@ -66,45 +66,25 @@ ll modinv(ll a, ll m) {
        x += m0;
     return x;
 }
-
+ll nChoosek( ll n, ll k )
+{
+    if (k > n) return 0;
+    if (k * 2 > n) k = n-k;
+    if (k == 0) return 1;
+    ll result = n;
+    for( ll i = 2; i <= k; ++i ) {
+        result =(result*(n-i+1))%mod;
+        result =(result*modinv(i,mod))%mod;
+    }
+    return result;
+}
 
 int main(){
-	cin.tie(NULL);
-	ios_base::sync_with_stdio(false);
-  string s;
-  cin>>s;
-  ll n=s.length();
-  vector<pair<char, int>> f;
-  f.push_back({s[0],1});
-  fur(i,1,n){
-    if(s[i]!=f[f.size()-1].X){
-      f.push_back({s[i],1});
-    }else{
-      f[f.size()-1].Y++;
-    }
-  }
-  
-  if(f.size()%2==0){
-    cout<<0;
-  }else{
-    ll m=f[f.size()/2].Y;
-    if(m<2){
-      cout<<0;
-      return 0;
-    }
-    fur(i,0,f.size()/2){
-      if(f[i].X!=f[f.size()-(i+1)].X){
-        cout<<0;
-        return 0;
-      }
-      if(f[i].Y+f[f.size()-(i+1)].Y<3){
-        cout<<0;
-        return 0;
-      }
-    }
-    cout<<m+1;
-  }
+    cin.tie(NULL);
+    ios_base::sync_with_stdio(false);
+    ll x=-(mod+1);
+    x=x+2*mod;
+    cout<<(x%mod);
 
-
-	return 0;
+    return 0;
 }

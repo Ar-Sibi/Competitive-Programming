@@ -66,45 +66,41 @@ ll modinv(ll a, ll m) {
        x += m0;
     return x;
 }
+ll partition(vector<bitset<30>> &a,ll st,ll end,ll ind,ll mask){
+  if(ind==-1){
+    return mask;
+  }
+  if(a[st][ind]==a[end][ind]){
+    return partition(a,st,end,ind-1,mask);
+  }else{
+    ll e2=st;
+    for(ll i=st;i<=end;i++){
+      if(a[i][ind]!=a[st][ind]){
+        e2=i;
+        break;
+      }
+    }
+    return min(partition(a,st,e2-1,ind-1,mask|1<<ind),partition(a,e2,end,ind-1,mask|1<<ind));
+  }
+
+}
 
 
 int main(){
 	cin.tie(NULL);
 	ios_base::sync_with_stdio(false);
-  string s;
-  cin>>s;
-  ll n=s.length();
-  vector<pair<char, int>> f;
-  f.push_back({s[0],1});
-  fur(i,1,n){
-    if(s[i]!=f[f.size()-1].X){
-      f.push_back({s[i],1});
-    }else{
-      f[f.size()-1].Y++;
-    }
+  ll n;
+  cin>>n;
+  vll b(n);
+  fur(i,0,n){
+    ll x;
+    cin>>x;
+    b[i]=x;
   }
-  
-  if(f.size()%2==0){
-    cout<<0;
-  }else{
-    ll m=f[f.size()/2].Y;
-    if(m<2){
-      cout<<0;
-      return 0;
-    }
-    fur(i,0,f.size()/2){
-      if(f[i].X!=f[f.size()-(i+1)].X){
-        cout<<0;
-        return 0;
-      }
-      if(f[i].Y+f[f.size()-(i+1)].Y<3){
-        cout<<0;
-        return 0;
-      }
-    }
-    cout<<m+1;
-  }
-
-
+  sort(b.begin(),b.end());
+  vector<bitset<30>> c(n);
+  fur(i,0,n)c[i]=b[i];
+  ll ans=partition(c,0,n-1,30,0);
+  cout<<ans;
 	return 0;
 }

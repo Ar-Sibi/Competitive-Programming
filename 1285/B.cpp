@@ -68,42 +68,46 @@ ll modinv(ll a, ll m) {
 }
 
 
+ll maxSubArraySum(vll &a,ll start, ll size) 
+{ 
+   ll max_so_far = 0, max_ending_here = 0; 
+   for (ll i = start; i < size; i++) 
+   { 
+       max_ending_here = max_ending_here + a[i]; 
+       if (max_ending_here < 0) 
+           max_ending_here = 0; 
+
+       else if (max_so_far < max_ending_here) 
+           max_so_far = max_ending_here; 
+   } 
+   return max_so_far; 
+} 
+
 int main(){
 	cin.tie(NULL);
 	ios_base::sync_with_stdio(false);
-  string s;
-  cin>>s;
-  ll n=s.length();
-  vector<pair<char, int>> f;
-  f.push_back({s[0],1});
-  fur(i,1,n){
-    if(s[i]!=f[f.size()-1].X){
-      f.push_back({s[i],1});
+  ll t;
+  cin>>t;
+  while(t--){
+    ll n;
+    cin>>n;
+    vll a(n);
+    ll sum=0;
+    fur(i,0,n){
+      ll x;
+      cin>>x;
+      a[i]=x;
+      sum+=x;
+    }
+    ll max1= maxSubArraySum(a,0,n-1);
+    ll max2=maxSubArraySum(a,1,n);
+    if(sum>max1&&sum>max2){
+      cout<<"YES\n";
     }else{
-      f[f.size()-1].Y++;
+      cout<<"NO\n";
     }
   }
-  
-  if(f.size()%2==0){
-    cout<<0;
-  }else{
-    ll m=f[f.size()/2].Y;
-    if(m<2){
-      cout<<0;
-      return 0;
-    }
-    fur(i,0,f.size()/2){
-      if(f[i].X!=f[f.size()-(i+1)].X){
-        cout<<0;
-        return 0;
-      }
-      if(f[i].Y+f[f.size()-(i+1)].Y<3){
-        cout<<0;
-        return 0;
-      }
-    }
-    cout<<m+1;
-  }
+
 
 
 	return 0;

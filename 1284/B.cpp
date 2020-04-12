@@ -71,40 +71,58 @@ ll modinv(ll a, ll m) {
 int main(){
 	cin.tie(NULL);
 	ios_base::sync_with_stdio(false);
-  string s;
-  cin>>s;
-  ll n=s.length();
-  vector<pair<char, int>> f;
-  f.push_back({s[0],1});
-  fur(i,1,n){
-    if(s[i]!=f[f.size()-1].X){
-      f.push_back({s[i],1});
-    }else{
-      f[f.size()-1].Y++;
+  ll n;
+  cin>>n;
+  vll ma(0);
+  vll mi(0);
+  ll gg=0;
+  fur(i,0,n){
+    ll q;
+    cin>>q;
+    ll a=INT_MAX;
+    ll b=INT_MIN;
+    bool mark=false;
+    while(q--){
+      ll y;
+      cin>>y;
+      if(y<a)a=y;
+      if(y>a)mark=true;
+      if(y>b)b=y;
+    }
+    if(mark)gg++;
+    else{
+      mi.push_back(a);
+      ma.push_back(b);
     }
   }
-  
-  if(f.size()%2==0){
-    cout<<0;
-  }else{
-    ll m=f[f.size()/2].Y;
-    if(m<2){
-      cout<<0;
-      return 0;
+  sort(ma.begin(),ma.end());
+  sort(mi.begin(),mi.end());
+  reverse(mi.begin(),mi.end());    
+  reverse(ma.begin(), ma.end());
+  ll ans=gg*gg+2*gg*(n-gg);
+  ll dda=0; 
+  fur(i,0,n-gg){
+    // cout<<mi[i]<<" "<<ma[i]; maxa > mina 
+    // cout<<mi[i]<<":"<<"\n";
+    fur(j,dda,n-gg){
+      // cout<<ma[j]<<" ";
+      if(mi[i]<ma[j]){dda++;}
+      else break;
     }
-    fur(i,0,f.size()/2){
-      if(f[i].X!=f[f.size()-(i+1)].X){
-        cout<<0;
-        return 0;
-      }
-      if(f[i].Y+f[f.size()-(i+1)].Y<3){
-        cout<<0;
-        return 0;
-      }
-    }
-    cout<<m+1;
+    // cout<<"\n";
+    ans+=dda;
+    // ans+=(n-gg)-dda;
+    // cout<<"\n";
+    // }
+    // for(;j<n-gg;){
+    //   cout<<mi[i]<<ma[j]<<"\n";
+    //   if(mi[i]>ma[j])j++;
+    //   else break;
+    // }
+    // cout<<j<<"\n";
+    // ans+=(n-gg)-j;
   }
-
+  cout<<ans;
 
 	return 0;
 }

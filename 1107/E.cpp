@@ -35,7 +35,7 @@ typedef vector<int> vi;
 #define eps 1e-5
 #define X first
 #define Y second
-
+vector<vvll> dp(105,vvll(105,vll(105)));
 
 ll modpow(ll base, ll exp, ll modulus) {
   base %= modulus;
@@ -66,45 +66,36 @@ ll modinv(ll a, ll m) {
        x += m0;
     return x;
 }
-
+vll a;
+ll solve(ll n,string s){
+  fur(l,0,n){
+    fur(start,0,(n-l)){
+      ll end=start+l;
+      fur(k,0,n){
+        if(start==end){
+          dp[start][end][k]=a[k];
+        }else{
+          dp[start][end][k] = a[k] + dp[start+1][end][0];
+          fur(i,start+1,end+1){
+            if(s[i]==s[start])
+            dp[start][end][k]=max(dp[start][end][k],dp[start+1][i-1][0]+dp[i][end][k+1]);
+          }
+        }
+      }
+    }
+  }
+  return dp[0][n-1][0];
+}
 
 int main(){
 	cin.tie(NULL);
 	ios_base::sync_with_stdio(false);
+  ll n;
+  cin>>n;
+  a=vll(n);
   string s;
   cin>>s;
-  ll n=s.length();
-  vector<pair<char, int>> f;
-  f.push_back({s[0],1});
-  fur(i,1,n){
-    if(s[i]!=f[f.size()-1].X){
-      f.push_back({s[i],1});
-    }else{
-      f[f.size()-1].Y++;
-    }
-  }
-  
-  if(f.size()%2==0){
-    cout<<0;
-  }else{
-    ll m=f[f.size()/2].Y;
-    if(m<2){
-      cout<<0;
-      return 0;
-    }
-    fur(i,0,f.size()/2){
-      if(f[i].X!=f[f.size()-(i+1)].X){
-        cout<<0;
-        return 0;
-      }
-      if(f[i].Y+f[f.size()-(i+1)].Y<3){
-        cout<<0;
-        return 0;
-      }
-    }
-    cout<<m+1;
-  }
-
-
+  fur(i,0,n)cin>>a[i];
+  cout<< solve(n,s);
 	return 0;
 }

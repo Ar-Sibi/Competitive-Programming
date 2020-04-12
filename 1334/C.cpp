@@ -66,44 +66,48 @@ ll modinv(ll a, ll m) {
        x += m0;
     return x;
 }
-
+bool sorter(pll a,pll b){
+  if(a.X==b.X){
+    return a.Y>b.Y;
+  }
+  return a.X<b.X;
+}
 
 int main(){
 	cin.tie(NULL);
 	ios_base::sync_with_stdio(false);
-  string s;
-  cin>>s;
-  ll n=s.length();
-  vector<pair<char, int>> f;
-  f.push_back({s[0],1});
-  fur(i,1,n){
-    if(s[i]!=f[f.size()-1].X){
-      f.push_back({s[i],1});
-    }else{
-      f[f.size()-1].Y++;
+  ll t;
+  cin>>t;
+  while(t--){
+    ll n;
+    cin>>n;
+    vpll a(n);
+    vpll b(n);
+
+    fur(i,0,n)cin>>a[i].X>>a[i].Y;
+    fur(i,0,n){
+      b[i].X=a[i].X;
+      b[i].Y=a[i].Y;
     }
-  }
-  
-  if(f.size()%2==0){
-    cout<<0;
-  }else{
-    ll m=f[f.size()/2].Y;
-    if(m<2){
-      cout<<0;
-      return 0;
+    vvll dp(n+1,vll(2));
+    dp[0][0]=a[0].X;
+
+    fur(i,1,n){
+      dp[i][0]=dp[i-1][0]+max<ll>(a[i].X-a[i-1].Y,0);
     }
-    fur(i,0,f.size()/2){
-      if(f[i].X!=f[f.size()-(i+1)].X){
-        cout<<0;
-        return 0;
+    ll ans=dp[n-1][0];
+    dp[n-1][0]-=min<ll>(a[n-1].Y,a[0].X);
+    // sort(a.begin(), a.end());
+    fur(i,0,n){
+      if(
+      dp[n-1][0]+min<ll>(b[(n+i-1)%n].Y,b[i].X)<ans){
+        ans=dp[n-1][0]+min<ll>(b[(n+i-1)%n].Y,b[i].X);
       }
-      if(f[i].Y+f[f.size()-(i+1)].Y<3){
-        cout<<0;
-        return 0;
-      }
+      
     }
-    cout<<m+1;
+    cout<<ans<<"\n";
   }
+
 
 
 	return 0;

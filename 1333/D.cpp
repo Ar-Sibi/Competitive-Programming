@@ -67,43 +67,51 @@ ll modinv(ll a, ll m) {
 int main() {
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
-    ll n, m;
-    cin >> n >> m;
-    vvll bo(m, vll(n));
-    vll votes(n);
-    fur(i, 0, m) {
-        fur(j, 0, n) {
-            cin >> bo[i][j];
-            votes[j] += bo[i][j];
+    ll n, k;
+    cin >> n >> k;
+    string s;
+    cin >> s;
+    vll ch(n);
+    ll r = 0;
+    vll sol(0);
+    fur(i, 0, n) {
+        if (s[i] == 'R') r++;
+        if (s[i] == 'L') {
+            sol.pb(r);
         }
     }
-    ll min = m+1;
-    vll ans(0);
-    fur(i, 0, n - 1) {
-        vpll g(0);
-        fur(j, 0, m) { g.push_back({bo[j][i] - bo[j][n - 1], j}); }
-        sort(g.begin(), g.end());
-        ll diff = votes[n - 1] - votes[i];
-        ll cv = 0;
-        vll ca(0);
-        fur(i, 0, m) {
-            if (diff <= 0) break;
-            diff += g[i].X;
-            ca.pb(g[i].Y);
-            cv++;
-        }
-        if (cv < min) {
-            ans=vll(0);
-            fur(i,0,ca.size()){
-              ans.pb(ca[i]+1);
+    vll jumps(n, 0);
+    vll mins(sol.size());
+    ll min = 0;
+    ll maxs = 0;
+    vll start(sol.size());
+    vpll f(sol.size());
+    fur(i, 0, sol.size()) {
+        maxs += sol[i];
+        if (i == 0) {
+            min = sol[i];
+            mins[0] = sol[i];
+            start[0] = 0;
+        } else {
+            if (sol[i] == sol[i - 1]) {
+                start[i] = start[i - 1] + 1;
+            } else {
+                start[i] = start[i - 1] + 1 - (sol[i] - sol[i - 1]);
             }
-            min = cv;
+            mins[i]=start[i]+sol[i];
+            // mins[i] = max<ll>(mins[i-1],start[i]+sol[i]);
         }
-        // vll ans2(0);
     }
-    cout<<min<<"\n";
-    fur(i,0,ans.size()){
-      cout<<ans[i]<<" ";
+    
+    ll minimum = mins[mins.size() - 1];
+    if (k >= mins[sol.size() - 1] && k <= maxs) {
+        while (k > 0) {
+            ll today = max<ll>(k - minimum, sol.size());
+        }
+
+    } else {
+        cout << "-1";
     }
+
     return 0;
 }

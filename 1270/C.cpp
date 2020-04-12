@@ -71,39 +71,27 @@ ll modinv(ll a, ll m) {
 int main(){
 	cin.tie(NULL);
 	ios_base::sync_with_stdio(false);
-  string s;
-  cin>>s;
-  ll n=s.length();
-  vector<pair<char, int>> f;
-  f.push_back({s[0],1});
-  fur(i,1,n){
-    if(s[i]!=f[f.size()-1].X){
-      f.push_back({s[i],1});
-    }else{
-      f[f.size()-1].Y++;
+  ll t;
+  cin>> t;
+  while(t--){
+    ll n;
+    cin>>n;
+    ll sum=0;
+    ll xo=0;
+    fur(i,0,n){
+      ll x;
+      cin>>x;
+      sum+=x;
+      xo^=x;
     }
+    vll ans(2);
+    ans[0]=xo;
+    sum+=xo;
+    ans[1]=sum;
+    cout<<"2\n";
+    cout<<ans[0]<<" "<<ans[1]<<"\n";
   }
-  
-  if(f.size()%2==0){
-    cout<<0;
-  }else{
-    ll m=f[f.size()/2].Y;
-    if(m<2){
-      cout<<0;
-      return 0;
-    }
-    fur(i,0,f.size()/2){
-      if(f[i].X!=f[f.size()-(i+1)].X){
-        cout<<0;
-        return 0;
-      }
-      if(f[i].Y+f[f.size()-(i+1)].Y<3){
-        cout<<0;
-        return 0;
-      }
-    }
-    cout<<m+1;
-  }
+
 
 
 	return 0;
